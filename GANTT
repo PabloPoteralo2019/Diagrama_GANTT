@@ -1,0 +1,61 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.dates import DateFormatter
+
+# Datos del cronograma de trabajo con tareas en el orden especificado
+data_updated_order = {
+    'Tarea': [
+        'Definición de Requisitos', 'Análisis de Viabilidad', 'Planificación del Proyecto',
+        'Diseño de la Arquitectura', 'Diseño de la Interfaz de Usuario',
+        'Desarrollo del Frontend', 'Desarrollo del Módulo de E-commerce',
+        'Preparación del Entorno de Producción', 'Despliegue del Sistema', 'Formación y Soporte Inicial'
+    ],
+    'Inicio': [
+        '2024-03-18', '2024-03-25', '2024-04-01',
+        '2024-04-08', '2024-04-15',
+        '2024-04-22', '2024-04-22',
+        '2024-07-01', '2024-07-08', '2024-07-15'
+    ],
+    'Fin': [
+        '2024-03-24', '2024-03-31', '2024-04-07',
+        '2024-04-14', '2024-04-21',
+        '2024-06-30', '2024-06-30',
+        '2024-07-07', '2024-07-14', '2024-07-20'
+    ]
+}
+
+# Convertir las fechas de inicio y fin a tipo datetime
+df_updated_order = pd.DataFrame(data_updated_order)
+df_updated_order['Inicio'] = pd.to_datetime(df_updated_order['Inicio'])
+df_updated_order['Fin'] = pd.to_datetime(df_updated_order['Fin'])
+
+# Crear el gráfico de Gantt
+fig, ax = plt.subplots(figsize=(12, 8))
+
+# Crear barras de Gantt y líneas de dependencia
+for idx, row in df_updated_order[::-1].iterrows():
+    ax.barh(row['Tarea'], (row['Fin'] - row['Inicio']).days, left=row['Inicio'])
+    if idx < len(df_updated_order) - 1:
+        next_row = df_updated_order.iloc[idx + 1]
+        ax.plot([row['Fin'], next_row['Inicio']], [row['Tarea'], next_row['Tarea']], color='black', linestyle='--', linewidth=1)
+
+# Configurar formato de fechas en el eje x
+ax.xaxis.set_major_locator(mdates.MonthLocator())
+ax.xaxis.set_major_formatter(DateFormatter('%B %Y', usetex=False))
+ax.set_xticks(pd.date_range(start="2024-03-01", end="2024-07-31", freq='MS'))
+ax.set_xticklabels(['Marzo 2024', 'Abril 2024', 'Mayo 2024', 'Junio 2024', 'Julio 2024'])
+
+plt.xticks(rotation=45)
+
+# Etiquetas y título en español
+plt.xlabel('Fecha')
+plt.ylabel('Tarea')
+plt.title('Cronograma de Trabajo para Sistema Web con Tienda en Línea (sin Backend y Pruebas) - Diagrama de Gantt')
+
+plt.tight_layout()
+
+# Guardar el gráfico como archivo PNG
+plt.savefig('cronograma_sistema_web_no_backend_no_tests_with_dependencies_es_formatted_desc_gantt.png')
+
+plt.show()
