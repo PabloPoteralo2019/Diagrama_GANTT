@@ -51,11 +51,8 @@ plt.xticks(rotation=45)
 # Etiquetas y título en español
 plt.xlabel('Fecha')
 plt.ylabel('Tarea')
-plt.title('Cronograma de Trabajo para Sistema Web con Tienda en Línea (sin Backend y Pruebas) - Diagrama de Gantt')
+plt.title('Cronograma de Trabajo para Sistema Web con Tienda en Línea - Diagrama de Gantt')
 
 plt.tight_layout()
-
-# Guardar el gráfico como archivo PNG
-plt.savefig('cronograma_sistema_web_no_backend_no_tests_with_dependencies_es_formatted_desc_gantt.png')
 
 plt.show()
