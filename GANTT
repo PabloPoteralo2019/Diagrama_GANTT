@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.dates import DateFormatter
 
-# Datos del cronograma de trabajo con tareas en el orden especificado
+# Datos del cronograma de trabajo con tareas
 data_updated_order = {
     'Tarea': [
         'Definición de Requisitos', 'Análisis de Viabilidad', 'Planificación del Proyecto',
@@ -25,22 +25,22 @@ data_updated_order = {
     ]
 }
 
-# Convertir las fechas de inicio y fin a tipo datetime
+
 df_updated_order = pd.DataFrame(data_updated_order)
 df_updated_order['Inicio'] = pd.to_datetime(df_updated_order['Inicio'])
 df_updated_order['Fin'] = pd.to_datetime(df_updated_order['Fin'])
 
-# Crear el gráfico de Gantt
+# Aca creamos el gráfico de Gantt
 fig, ax = plt.subplots(figsize=(12, 8))
 
-# Crear barras de Gantt y líneas de dependencia
+# Aca Creamos las barras de Gantt y líneas de dependencia
 for idx, row in df_updated_order[::-1].iterrows():
     ax.barh(row['Tarea'], (row['Fin'] - row['Inicio']).days, left=row['Inicio'])
     if idx < len(df_updated_order) - 1:
         next_row = df_updated_order.iloc[idx + 1]
         ax.plot([row['Fin'], next_row['Inicio']], [row['Tarea'], next_row['Tarea']], color='black', linestyle='--', linewidth=1)
 
-# Configurar formato de fechas en el eje x
+# Aca configuramos el formato de fechas en el eje x
 ax.xaxis.set_major_locator(mdates.MonthLocator())
 ax.xaxis.set_major_formatter(DateFormatter('%B %Y', usetex=False))
 ax.set_xticks(pd.date_range(start="2024-03-01", end="2024-07-31", freq='MS'))
@@ -48,7 +48,7 @@ ax.set_xticklabels(['Marzo 2024', 'Abril 2024', 'Mayo 2024', 'Junio 2024', 'Juli
 
 plt.xticks(rotation=45)
 
-# Etiquetas y título en español
+# Aca configuramos Etiquetas y títulos 
 plt.xlabel('Fecha')
 plt.ylabel('Tarea')
 plt.title('Cronograma de Trabajo para Sistema Web con Tienda en Línea - Diagrama de Gantt')
